@@ -84,11 +84,11 @@ import sys
 import requests
 import json
 
-APIKEY='use-your-own-thingspeak-apk-key'
+APIKEY='YNHZUFJJ3MQHHNI4'
 
 def on_connect(client, userdata, flags, rc, properties=None):
     print("Connected" )
-    client.subscribe("ewha/0317137263")
+    client.subscribe("ewha/2566023")
 
 def on_message(client, userdata, msg):
     doit(msg.topic, msg.payload.decode('utf8'))
