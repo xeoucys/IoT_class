@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>My</title>
-    <H3>나의 웹(2566023, 서유)</H3>
+    <H3>나의 웹(2566023, 서유정정)</H3>
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
     <script>
         const brokerUrl = 'wss://damoa.io:9002';
@@ -76,34 +76,3 @@
 <div id="main"></div>
 </body>
 </html>
-
-import json
-import paho.mqtt.client as mqtt
-from myutil import d2s
-import sys
-import requests
-import json
-
-APIKEY='YNHZUFJJ3MQHHNI4'
-
-def on_connect(client, userdata, flags, rc, properties=None):
-    print("Connected" )
-    client.subscribe("ewha/2566023")
-
-def on_message(client, userdata, msg):
-    doit(msg.topic, msg.payload.decode('utf8'))
-
-client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
-client.on_connect = on_connect
-client.on_message = on_message
-client.connect("damoa.io", 1883)
-
-def doit(t, d):
-    j=json.loads(d)
-    print(j)
-    url=f'https://api.thingspeak.com/update?api_key={APIKEY}&field1={j["온도"]}&field2={j["습도"]}'
-    print(url)
-    r=requests.get(url)
-    print(r.text)
-
-client.loop_forever()
