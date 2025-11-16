@@ -4,67 +4,8 @@
     <meta charset="utf-8" />
     <title>MQTT 예제</title>
     <h3>나의 웹 (2566023, 서유정)</h3>
-    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
-    <script>
-        // ===== 기본 설정 =====
-        const brokerUrl = 'wss://damoa.io/mqtt'; // 웹소켓용 주소 (1883은 웹에서 불가)
-        const clientId = 'iot-client-' + Math.random().toString(16).substr(2, 8);
-        const options = { clientId: clientId };
-
-        const pubTopic = 'ewha/exam/2566023';      // 발행 토픽
-        const subTopic = 'ewha/exam/ans/2566023';  // 응답 수신 토픽
-        const payload = JSON.stringify({ name: "서유정" }); // JSON 메시지
-
-        console.log(`MQTT 브로커(${brokerUrl})에 접속을 시도합니다...`);
-        const client = mqtt.connect(brokerUrl, options);
-
-        // ===== 연결 성공 시 =====
-        client.on('connect', () => {
-            console.log(`✅ 접속 성공! (클라이언트 ID: ${clientId})`);
-
-            // 응답용 토픽 구독
-            client.subscribe(subTopic, (err) => {
-                if (!err) {
-                    console.log(`📄 응답 토픽 구독 성공: ${subTopic}`);
-
-                    // JSON 메시지 발행
-                    client.publish(pubTopic, payload);
-                    console.log(`📤 메시지 발행 완료 → ${pubTopic} : ${payload}`);
-                } else {
-                    console.error('토픽 구독 오류:', err);
-                }
-            });
-        });
-
-        // ===== 메시지 수신 시 =====
-        client.on('message', (topic, message) => {
-            const msg = message.toString();
-            console.log(`📩 ${topic}: ${msg}`);
-
-            // 웹페이지 표시
-            const mainDiv = document.getElementById('main');
-            const messageHTML = `<div class="message-item"><span>${msg}</span></div>`;
-            mainDiv.innerHTML = messageHTML;
-
-            // ThingSpeak 전송
-            const apiKey = 'YNHZUFJJ3MQHHNI4';
-            const fieldValue = encodeURIComponent(msg);
-            const url = `https://api.thingspeak.com/update?api_key=${apiKey}&field1=${fieldValue}`;
-
-            fetch(url)
-                .then(res => res.text())
-                .then(result => console.log(`📤 ThingSpeak 전송 완료: ${result}`))
-                .catch(err => console.error('ThingSpeak 전송 오류:', err));
-        });
-
-        // ===== 에러 처리 =====
-        client.on('error', (err) => {
-            console.error('🚫 연결 오류:', err);
-            client.end();
-        });
-    </script>
 </head>
 <body>
-    <div id="main" style="font-family: sans-serif; margin: 20px;"></div>
+    <img src="image.png">
 </body>
 </html>
